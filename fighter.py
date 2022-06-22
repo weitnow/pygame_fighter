@@ -2,7 +2,7 @@ import pygame
 
 
 class Fighter():
-    def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps):
+    def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps, soundfx):
         self.player = player
         self.size = data[0]
         self.image_scale = data[1]
@@ -20,6 +20,7 @@ class Fighter():
         self.attacking = False
         self.attack_type = 0
         self.attack_cooldown = 0
+        self.attack_sound = soundfx
         self.hit = False
         self.health = 10
         self.alive = True
@@ -35,7 +36,7 @@ class Fighter():
             animation_list.append(temp_img_list)
         return animation_list
 
-    def move(self, screen_width, screen_height, surface, target):
+    def move(self, screen_width, screen_height, surface, target, round_over):
         SPEED = 10
         GRAVITY = 2
         dx = 0
@@ -48,7 +49,7 @@ class Fighter():
         key = self.pressed
 
         # can only perform other actions if not currently attacking
-        if self.attacking == False:
+        if self.attacking == False and self.alive == True and round_over == False:
             #check player 1 controls
             if self.player == 1:
                 # movement
@@ -170,13 +171,15 @@ class Fighter():
 
     def attack(self, surface, target):
         if self.attack_cooldown == 0:
+            #execute attack
             self.attacking = True
+            self.attack_sound.play()
             attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y,
                                          2 * self.rect.width, self.rect.height)
             if attacking_rect.colliderect(target.rect):
                 target.health -= 10
                 target.hit = True
-            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+            #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
     def update_action(self, new_action):
         #check if the new action is different to the previous one
