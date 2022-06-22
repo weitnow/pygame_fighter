@@ -1,8 +1,8 @@
 # Py Fighter 2 Turbo
 
-## Devlog 1
+## Preview
 
-![](https://github.com/weitnow/pygame_fighter/blob/master/devlog/devlog1.gif)
+![](https://github.com/weitnow/pygame_fighter/blob/master/devlog/devlog2.gif)
 
 ## Used tech
 
